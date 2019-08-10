@@ -1,22 +1,18 @@
 const express = require('express')
 const router = new express.Router()
 const User = require('../models/user')
+const auth = require('../middleware/auth')
 
 router.post('/users', async(req, res) => {
     const user = new User(req.body)
+
     try {
         await user.save()
-        const token = user.generateAuthToken()
+        const token = await user.generateAuthToken()
         res.status(201).send({ user, token })
-    } catch (error) {
-        res.status(400).send(error)
+    } catch (e) {
+        res.status(400).send(e)
     }
-
-    // user.save().then(() => {
-    //     res.send(user)
-    // }).catch((e) => {
-    //     res.status(400).send(e)
-    // })
 })
 
 router.get('/users/:id', async(req, res) => {
@@ -43,19 +39,8 @@ router.get('/users/:id', async(req, res) => {
     // })
 })
 
-router.get('/users', async(req, res) => {
-    try {
-        const users = await User.find({})
-        res.send(users)
-    } catch (error) {
-        res.status(500).send()
-    }
-
-    // User.find({}).then((users) => {
-    //     res.send(users)
-    // }).catch((e) => {
-    //     res.status(500).send()
-    // })
+router.get('/users/profiles/me', auth, async(req, res) => {
+    res.send(req.user)
 })
 
 

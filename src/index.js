@@ -2,6 +2,7 @@ const express = require('express')
 require('./db/mongoose')
 const userRouter = require('./routers/user')
 const taskRouter = require('./routers/task')
+
 const path = require('path')
 const hbs = require('hbs')
 
@@ -39,6 +40,28 @@ app.get('', (req, res) => {
     res.render('index', {
         title: 'Task Manager',
         name: 'James'
+    })
+})
+
+app.get('/signup', (req, res) => {
+    res.render('signup', {
+        title: 'Sign Up',
+        name: 'James'
+    })
+})
+
+app.get('/about', (req, res) => {
+    res.render('about', {
+        title: 'About Me',
+        name: 'James'
+    })
+})
+
+app.get('/help', (req, res) => {
+    res.render('help', {
+        helpText: 'This is some help text',
+        title: 'Help',
+        name: "James"
     })
 })
 
